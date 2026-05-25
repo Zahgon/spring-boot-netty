@@ -10,7 +10,6 @@ import org.kgusarov.integration.spring.netty.support.invoke.OnConnectMethodInvok
 import org.kgusarov.integration.spring.netty.support.invoke.OnMessageMethodInvoker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -22,27 +21,23 @@ import java.util.stream.Collectors;
  * annotated methods
  */
 @SuppressWarnings("CodeBlock2Expr")
-public class SpringChannelHandler extends ChannelInboundHandlerAdapter{
+public class SpringChannelHandler extends ChannelInboundHandlerAdapter {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringChannelHandler.class);
 
     private final List<OnConnectMethodInvoker> onConnectCallbacks;
+
     private final List<OnMessageMethodInvoker> onMessageCallbacks;
 
     private final ListMultimap<Class<?>, OnMessageMethodInvoker> typedCallbackMap;
+
     private final Set<Class<?>> typedCallbackClasses;
 
-    public SpringChannelHandler(final List<OnConnectMethodInvoker> onConnectCallbacks,
-                                final List<OnMessageMethodInvoker> onMessageCallbacks) {
-
+    public SpringChannelHandler(final List<OnConnectMethodInvoker> onConnectCallbacks, final List<OnMessageMethodInvoker> onMessageCallbacks) {
         this.onConnectCallbacks = onConnectCallbacks;
         this.onMessageCallbacks = onMessageCallbacks;
-
         final Multimap<Class<?>, OnMessageMethodInvoker> onMessageInvokers = ArrayListMultimap.create();
-        final Set<? extends Class<?>> messageBodyTypes = onMessageCallbacks.stream()
-                .map(OnMessageMethodInvoker::getMessageBodyType)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-
+        final Set<? extends Class<?>> messageBodyTypes = onMessageCallbacks.stream().map(OnMessageMethodInvoker::getMessageBodyType).filter(Objects::nonNull).collect(Collectors.toSet());
         messageBodyTypes.forEach(mbt -> {
             onMessageCallbacks.forEach(invoker -> {
                 final Class<?> messageBodyType = invoker.getMessageBodyType();
@@ -51,38 +46,18 @@ public class SpringChannelHandler extends ChannelInboundHandlerAdapter{
                 }
             });
         });
-
         typedCallbackMap = ImmutableListMultimap.copyOf(onMessageInvokers);
         typedCallbackClasses = typedCallbackMap.keySet();
     }
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) throws Exception {
-        onConnectCallbacks.forEach(cb -> {
-            cb.channelActive(ctx);
-        });
-
-        super.channelActive(ctx);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     @SuppressWarnings("NestedMethodCall")
     public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
-        final Class<?> messageClass = msg.getClass();
-        final List<OnMessageMethodInvoker> callbacks = typedCallbackClasses.stream()
-                .filter(clazz -> clazz.isAssignableFrom(messageClass))
-                .findFirst()
-                .map(typedCallbackMap::get)
-                .orElse(onMessageCallbacks);
-
-        final boolean processed = callbacks.stream()
-                .map(cb -> cb.channelRead(ctx, msg))
-                .reduce(false, (a, b) -> a || b);
-
-        if (!processed) {
-            LOGGER.warn("Message " + msg + " was not processed by any handler");
-        }
-
-        super.channelRead(ctx, msg);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

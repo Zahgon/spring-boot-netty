@@ -4,11 +4,9 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import org.kgusarov.integration.spring.netty.annotations.NettyOnDisconnect;
 import org.kgusarov.integration.spring.netty.support.resolvers.NettyOnDisconnectParameterResolver;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.List;
-
 import static org.kgusarov.integration.spring.netty.support.invoke.InvokerMethods.OND_INVOKE_HANDLER;
 import static org.kgusarov.integration.spring.netty.support.invoke.assembler.Descriptors.*;
 import static org.objectweb.asm.Opcodes.*;
@@ -17,8 +15,10 @@ import static org.objectweb.asm.Opcodes.*;
  * Internal API: invocation support for {@link NettyOnDisconnect}
  */
 public final class OnDisconnectMethodInvoker extends AbstractMethodInvoker {
+
     @SuppressWarnings("AbstractClassNeverImplemented")
     abstract static class Invoker extends InvokerBase {
+
         NettyOnDisconnectParameterResolver[] resolvers;
 
         abstract void invokeHandler(final Channel channel, final ChannelFuture channelFuture);
@@ -26,9 +26,7 @@ public final class OnDisconnectMethodInvoker extends AbstractMethodInvoker {
 
     private final Invoker invoker;
 
-    public OnDisconnectMethodInvoker(final Object bean, final Method method,
-                                     final List<NettyOnDisconnectParameterResolver> parameterResolvers) {
-
+    public OnDisconnectMethodInvoker(final Object bean, final Method method, final List<NettyOnDisconnectParameterResolver> parameterResolvers) {
         invoker = buildInvoker(Invoker.class, method, OND_INVOKE_HANDLER, false, (invokerInternalName, m, firstVarIdx) -> {
             final Parameter[] parameters = method.getParameters();
             for (int i = 0; i < parameters.length; i++) {
@@ -41,13 +39,11 @@ public final class OnDisconnectMethodInvoker extends AbstractMethodInvoker {
                 m.visitIntInsn(ASTORE, firstVarIdx + i);
             }
         });
-
         invoker.bean = bean;
         invoker.resolvers = parameterResolvers.toArray(new NettyOnDisconnectParameterResolver[0]);
     }
 
     public void channelClosed(final ChannelFuture channelFuture) {
-        final Channel channel = channelFuture.channel();
-        invoker.invokeHandler(channel, channelFuture);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -13,3 +13,8 @@ buildNumber.properties
 build/
 out/
 .gradle/
+
+.aider*
+logs/
+.commit0_scripts/
+.github/workflows/

@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MessageBodyOnMessageResolver implements NettyOnMessageParameterResolver {
+
     @Override
     public boolean canResolve(final MethodParameter methodParameter) {
-        return methodParameter.hasParameterAnnotation(NettyMessageBody.class);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Object resolve(final ChannelHandlerContext ctx, final Object msg) {
-        return msg;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

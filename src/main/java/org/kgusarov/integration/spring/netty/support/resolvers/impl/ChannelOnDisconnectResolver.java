@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ChannelOnDisconnectResolver implements NettyOnDisconnectParameterResolver {
+
     @Override
     public boolean canResolve(final MethodParameter methodParameter) {
-        final Class<?> parameterType = methodParameter.getParameterType();
-        return Channel.class.isAssignableFrom(parameterType);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Object resolve(final ChannelFuture future) {
-        return future.channel();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

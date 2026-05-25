@@ -2,7 +2,6 @@ package org.kgusarov.integration.spring.netty.configuration;
 
 import org.kgusarov.integration.spring.netty.ChannelOptions;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -10,11 +9,18 @@ import javax.validation.constraints.NotNull;
  * Configuration properties for a single TCP server instance
  */
 public class TcpServerProperties {
-    private @NotBlank String name;
-    private @NotBlank String host;
-    private @NotNull Integer port;
+
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private String host;
+
+    @NotNull
+    private Integer port;
 
     private Integer bossThreads;
+
     private Integer workerThreads;
 
     @NestedConfigurationProperty
@@ -24,58 +30,58 @@ public class TcpServerProperties {
     private ChannelOptions childOptions;
 
     public String getName() {
-        return name;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setName(final String name) {
-        this.name = name;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Integer getBossThreads() {
-        return bossThreads;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setBossThreads(final Integer bossThreads) {
-        this.bossThreads = bossThreads;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Integer getWorkerThreads() {
-        return workerThreads;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setWorkerThreads(final Integer workerThreads) {
-        this.workerThreads = workerThreads;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public String getHost() {
-        return host;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setHost(final String host) {
-        this.host = host;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Integer getPort() {
-        return port;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setPort(final Integer port) {
-        this.port = port;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ChannelOptions getOptions() {
-        return options;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setOptions(final ChannelOptions options) {
-        this.options = options;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ChannelOptions getChildOptions() {
-        return childOptions;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void setChildOptions(final ChannelOptions childOptions) {
-        this.childOptions = childOptions;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

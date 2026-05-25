@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ChannelHandlerContextOnConnectResolver implements NettyOnConnectParameterResolver {
+
     @Override
     public boolean canResolve(final MethodParameter methodParameter) {
-        final Class<?> parameterType = methodParameter.getParameterType();
-        return ChannelHandlerContext.class.isAssignableFrom(parameterType);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Object resolve(final ChannelHandlerContext ctx) {
-        return ctx;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

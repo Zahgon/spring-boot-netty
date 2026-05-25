@@ -11,7 +11,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
@@ -22,23 +21,35 @@ import java.util.function.Supplier;
  * Instance of the named TCP server
  */
 public final class TcpServer {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TcpServer.class);
 
     private final AtomicBoolean initialized = new AtomicBoolean(false);
+
     private final Map<String, Supplier<ChannelHandler>> handlers = Maps.newLinkedHashMap();
+
     private final List<Supplier<ChannelFutureListener>> closeFutureListeners = Lists.newArrayList();
+
     private final List<Supplier<ChannelHandler>> channelActiveHandlers = Lists.newArrayList();
+
     private final String name;
 
     private int bossThreads = Runtime.getRuntime().availableProcessors();
+
     private int workerThreads = Runtime.getRuntime().availableProcessors();
+
     private String host;
+
     private int port;
+
     private ChannelOptions options = new ChannelOptions();
+
     private ChannelOptions childOptions = new ChannelOptions();
 
     private EventLoopGroup bossThreadGroup;
+
     private EventLoopGroup workerThreadGroup;
+
     private int boundToPort = -1;
 
     /**
@@ -56,7 +67,7 @@ public final class TcpServer {
      * @return Port server is currently bound to, {@code -1} if not bound
      */
     public int getBoundToPort() {
-        return boundToPort;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -65,7 +76,7 @@ public final class TcpServer {
      * @param bossThreads Boss thread count
      */
     public void setBossThreads(final int bossThreads) {
-        checkState().bossThreads = bossThreads;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -74,7 +85,7 @@ public final class TcpServer {
      * @param workerThreads Worker thread count
      */
     public void setWorkerThreads(final int workerThreads) {
-        checkState().workerThreads = workerThreads;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -83,7 +94,7 @@ public final class TcpServer {
      * @param host Server host
      */
     public void setHost(final String host) {
-        checkState().host = host;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -92,7 +103,7 @@ public final class TcpServer {
      * @param port Server port
      */
     public void setPort(final int port) {
-        checkState().port = port;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -101,7 +112,7 @@ public final class TcpServer {
      * @param options Channel options
      */
     public void setOptions(final ChannelOptions options) {
-        checkState().options = options;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -110,20 +121,14 @@ public final class TcpServer {
      * @param childOptions Channel options
      */
     public void setChildOptions(final ChannelOptions childOptions) {
-        checkState().childOptions = childOptions;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Stops the current server
      */
     void stop() {
-        LOGGER.info("Stopping Netty `{}`", name);
-
-        workerThreadGroup.shutdownGracefully();
-        bossThreadGroup.shutdownGracefully();
-
-        workerThreadGroup.terminationFuture().syncUninterruptibly();
-        bossThreadGroup.terminationFuture().syncUninterruptibly();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -132,7 +137,7 @@ public final class TcpServer {
      * @param listener Listener to be added
      */
     public void onDisconnect(final Supplier<ChannelFutureListener> listener) {
-        checkState().closeFutureListeners.add(listener);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -141,7 +146,7 @@ public final class TcpServer {
      * @param handler Listener to be added
      */
     public void onConnect(final Supplier<ChannelHandler> handler) {
-        checkState().channelActiveHandlers.add(handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -151,7 +156,7 @@ public final class TcpServer {
      * @param channelHandler Handler to be added
      */
     public void addHandler(final String name, final Supplier<ChannelHandler> channelHandler) {
-        checkState().handlers.put(name, channelHandler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -160,58 +165,27 @@ public final class TcpServer {
      * @return              Empty future that will resolve when server will actually start
      */
     ListenableFuture<Void> start() {
-        if (!channelActiveHandlers.isEmpty()) {
-            int i = 1;
-            for (final Supplier<ChannelHandler> channelActiveHandler : channelActiveHandlers) {
-                addHandler("channelActive" + i++, channelActiveHandler);
-            }
-        }
-
-        LOGGER.info("Starting Netty server `{}` with {} boss threads and {} worker threads",
-                name, bossThreads, workerThreads);
-
-        final SettableFuture<Void> result = SettableFuture.create();
-        final ServerBootstrap serverBootstrap = checkState().createServerBootstrap();
-        final Channel ch = serverBootstrap
-                .bind(host, port)
-                .syncUninterruptibly()
-                .channel();
-
-        new Thread(() -> {
-            final InetSocketAddress boundTo = (InetSocketAddress) ch.localAddress();
-            final String hostName = boundTo.getAddress().getHostName();
-
-            boundToPort = boundTo.getPort();
-            LOGGER.info("Started Netty server `{}` @{}:{}", name, hostName, boundToPort);
-
-            result.set(null);
-            ch.closeFuture().syncUninterruptibly();
-        }, name).start();
-
-        return result;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private ServerBootstrap createServerBootstrap() {
         bossThreadGroup = new NioEventLoopGroup(bossThreads);
         workerThreadGroup = new NioEventLoopGroup(workerThreads);
-
         final ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossThreadGroup, workerThreadGroup);
-
         setOptions(bootstrap);
         initialized.set(true);
-
         return initServerBoostrap(bootstrap);
     }
 
     private ServerBootstrap initServerBoostrap(final ServerBootstrap bootstrap) {
-        return bootstrap.channel(NioServerSocketChannel.class)
-                .childHandler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(final SocketChannel ch) {
-                        initChildChannel(ch);
-                    }
-                });
+        return bootstrap.channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
+
+            @Override
+            protected void initChannel(final SocketChannel ch) {
+                throw new UnsupportedOperationException("STUB: not implemented");
+            }
+        });
     }
 
     private void initChildChannel(final SocketChannel ch) {
@@ -219,10 +193,8 @@ public final class TcpServer {
         for (final Map.Entry<String, Supplier<ChannelHandler>> entry : handlers.entrySet()) {
             final ChannelHandler handler = entry.getValue().get();
             final String key = entry.getKey();
-
             pipeline.addLast(key, handler);
         }
-
         if (!closeFutureListeners.isEmpty()) {
             for (final Supplier<ChannelFutureListener> listener : closeFutureListeners) {
                 final ChannelFutureListener cfl = listener.get();
@@ -231,22 +203,18 @@ public final class TcpServer {
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private void setOptions(final ServerBootstrap bootstrap) {
         final Map<ChannelOption, Object> channelOptions = options.get();
         final Map<ChannelOption, Object> childChannelOptions = childOptions.get();
-
         for (final Map.Entry<ChannelOption, Object> entry : channelOptions.entrySet()) {
             final ChannelOption key = entry.getKey();
             final Object value = entry.getValue();
-
             bootstrap.option(key, value);
         }
-
         for (final Map.Entry<ChannelOption, Object> entry : childChannelOptions.entrySet()) {
             final ChannelOption key = entry.getKey();
             final Object value = entry.getValue();
-
             bootstrap.childOption(key, value);
         }
     }
@@ -255,7 +223,6 @@ public final class TcpServer {
         if (initialized.get()) {
             throw new IllegalStateException("Server already initialized");
         }
-
         return this;
     }
 }
